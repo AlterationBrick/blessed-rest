@@ -5,9 +5,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.annotation.SuppressLint;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -16,6 +19,8 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class MainActivity extends AppCompatActivity {
+
+    String ipaddr = "0.0.0.0:0";
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -26,6 +31,10 @@ public class MainActivity extends AppCompatActivity {
         Button tiltUp = findViewById(R.id.tiltUp);
         Button tiltDown = findViewById(R.id.tiltDown);
         Button tiltAuto = findViewById(R.id.tiltAuto);
+        EditText ipField = findViewById(R.id.editText);
+        ipField.addTextChangedListener(watch);
+
+
 
         tiltUp.setOnTouchListener(new View.OnTouchListener() {
             @Override
@@ -61,12 +70,29 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    TextWatcher watch = new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            ipaddr = String.valueOf(s);
+        }
+
+        @Override
+        public void afterTextChanged(Editable s) {
+
+        }
+    };
+
     private class Background_get extends AsyncTask<String, Void, String> {
         @Override
         protected String doInBackground(String... params) {
             try {
                 // Define URL
-                URL url = new URL("http://192.168.1.12/" + params[0]);
+                URL url = new URL("http://" + ipaddr + "/" + params[0]);
                 // Open HTTP connection
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 // Create reader, string builder, and string to hold output

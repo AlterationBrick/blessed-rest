@@ -43,4 +43,16 @@
         android:text="Tilt"
         app:layout_constraintBottom_toTopOf="@+id/tiltUp"
         app:layout_constraintStart_toStartOf="@+id/tiltUp" />
+
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="Base Station IP"
+        app:layout_constraintStart_toStartOf="@+id/textView"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
