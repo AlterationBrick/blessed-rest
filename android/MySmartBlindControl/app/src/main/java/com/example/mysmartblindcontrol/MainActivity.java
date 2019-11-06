@@ -31,6 +31,7 @@ public class MainActivity extends AppCompatActivity {
         Button tiltUp = findViewById(R.id.tiltUp);
         Button tiltDown = findViewById(R.id.tiltDown);
         Button tiltAuto = findViewById(R.id.tiltAuto);
+        Button testLamp = findViewById(R.id.testLamp);
         EditText ipField = findViewById(R.id.editText);
         ipField.addTextChangedListener(watch);
 
@@ -65,6 +66,15 @@ public class MainActivity extends AppCompatActivity {
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN)
                     new Background_get().execute("tilt/auto");
+                return true;
+            }
+        });
+
+        testLamp.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN)
+                    new Background_get().execute("lamp/on");
                 return true;
             }
         });
