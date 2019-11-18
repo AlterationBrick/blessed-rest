@@ -3,6 +3,7 @@ package com.example.mysmartblindcontrol;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.app.TimePickerDialog;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.text.Editable;
@@ -11,16 +12,20 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TimePicker;
 
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.sql.Time;
+import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
 
     String ipaddr = "0.0.0.0:0";
+    EditText startTime;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -33,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
         Button tiltAuto = findViewById(R.id.tiltAuto);
         Button testLamp = findViewById(R.id.testLamp);
         EditText ipField = findViewById(R.id.editText);
+        startTime = findViewById(R.id.startTime);
         ipField.addTextChangedListener(watch);
 
 
@@ -78,6 +84,28 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+
+        startTime.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch (View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_UP) {
+                    Calendar mCurrentTime = Calendar.getInstance();
+                    final int hour = mCurrentTime.get(Calendar.HOUR_OF_DAY);
+                    int minute = mCurrentTime.get(Calendar.MINUTE);
+                    TimePickerDialog mTimePicker;
+                    mTimePicker = new TimePickerDialog(MainActivity.this, new TimePickerDialog.OnTimeSetListener() {
+                        @Override
+                        public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                            startTime.setText(String.format("%02d:%02d", hourOfDay, minute));
+                            new Background_get().execute(String.format("begin/%d/%d", hourOfDay, minute));
+                        }
+                    }, hour, minute, true);
+                    mTimePicker.setTitle("Select Time");
+                    mTimePicker.show();
+                }
+                return true;
+            }
+        });
     }
 
     TextWatcher watch = new TextWatcher() {
@@ -96,6 +124,8 @@ public class MainActivity extends AppCompatActivity {
 
         }
     };
+
+
 
     private class Background_get extends AsyncTask<String, Void, String> {
         @Override

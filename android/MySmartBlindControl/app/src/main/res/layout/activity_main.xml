@@ -12,37 +12,37 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="64dp"
         android:layout_marginLeft="64dp"
-        android:layout_marginTop="192dp"
+        android:layout_marginTop="224dp"
         android:text="Up"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
-    <Button
-        android:id="@+id/tiltDown"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="Down"
-        app:layout_constraintStart_toStartOf="@+id/tiltAuto"
-        app:layout_constraintTop_toBottomOf="@+id/tiltAuto" />
-
-    <Button
-        android:id="@+id/tiltAuto"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="24dp"
-        android:text="Auto"
-        app:layout_constraintStart_toStartOf="@+id/tiltUp"
-        app:layout_constraintTop_toBottomOf="@+id/tiltUp" />
 
     <TextView
         android:id="@+id/textView"
         android:layout_width="39dp"
         android:layout_height="25dp"
-        android:layout_marginBottom="28dp"
+        android:layout_marginBottom="24dp"
         android:text="Tilt"
         app:layout_constraintBottom_toTopOf="@+id/tiltUp"
         app:layout_constraintStart_toStartOf="@+id/tiltUp" />
+
+    <Button
+        android:id="@+id/tiltAuto"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        android:text="Auto"
+        app:layout_constraintStart_toStartOf="@+id/tiltUp"
+        app:layout_constraintTop_toBottomOf="@+id/tiltUp" />
+
+    <Button
+        android:id="@+id/tiltDown"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Down"
+        app:layout_constraintStart_toStartOf="@+id/tiltAuto"
+        app:layout_constraintTop_toBottomOf="@+id/tiltAuto" />
 
     <EditText
         android:id="@+id/editText"
@@ -50,8 +50,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:ems="10"
+        android:hint="Base Station IP"
         android:inputType="textPersonName"
-        android:text="Base Station IP"
         app:layout_constraintStart_toStartOf="@+id/textView"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -59,9 +59,20 @@
         android:id="@+id/testLamp"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="84dp"
+        android:layout_marginTop="212dp"
         android:text="Test Lamp"
         app:layout_constraintStart_toStartOf="@+id/tiltDown"
         app:layout_constraintTop_toBottomOf="@+id/tiltDown" />
+
+    <EditText
+        android:id="@+id/startTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:ems="10"
+        android:hint="Start Time"
+        android:inputType="time"
+        app:layout_constraintStart_toStartOf="@+id/editText"
+        app:layout_constraintTop_toBottomOf="@+id/editText" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

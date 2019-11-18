@@ -1,9 +1,14 @@
 #include<SPI.h>
 #include<RF24.h>
+#include <Wire.h>
+#include <Adafruit_MotorShield.h>
 
 RF24 radio(9,10);
-int led = 7;
-int led2 = 6;
+Adafruit_MotorShield AFMS = Adafruit_MotorShield(); 
+// tilt motor on M1, lift motor on M2
+Adafruit_DCMotor *tiltMotor = AFMS.getMotor(1);
+Adafruit_DCMotor *liftMotor = AFMS.getMotor(2);
+
 
 void setup(void) {
   radio.begin();
@@ -13,8 +18,14 @@ void setup(void) {
   radio.openReadingPipe(1, pipe);
   radio.enableDynamicPayloads();
   radio.powerUp();
-  pinMode(led, OUTPUT);
   Serial.begin(9600);
+  AFMS.begin();
+  tiltMotor->setSpeed(200);
+  tiltMotor->run(FORWARD);
+  tiltMotor->run(RELEASE);
+  liftMotor->setSpeed(200);
+  liftMotor->run(FORWARD);
+  liftMotor->run(RELEASE);
 }
 
 void loop(void) {
@@ -25,14 +36,18 @@ void loop(void) {
     radio.stopListening();
     String stringMessage(receivedMessage);
     Serial.println(stringMessage);
-    if (stringMessage == "test on") {
-      digitalWrite(led, HIGH);
-    } else if (stringMessage == "test off") {
-      digitalWrite(led, LOW);
-    } else if (stringMessage == "test2 on") {
-      digitalWrite(led2, HIGH);
-    } else if (stringMessage == "test2 off") {
-      digitalWrite(led2, LOW);
+    if (stringMessage == "tilt up") {
+      tiltMotor->run(FORWARD);
+    } else if (stringMessage == "tilt down") {
+      tiltMotor->run(BACKWARD);
+    } else if (stringMessage == "tilt stop") {
+      tiltMotor->run(RELEASE);
+    } else if (stringMessage == "lift up") {
+      liftMotor->run(FORWARD);
+    } else if (stringMessage == "lift down") {
+      liftMotor->run(BACKWARD);  
+    } else if (stringMessage == "lift stop") {
+      liftMotor->run(RELEASE);  
     }
   }
   delay(10);
