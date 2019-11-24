@@ -9,6 +9,7 @@ from threading import Thread
 from adafruit_ht16k33 import segments
 import board
 import busio
+import subprocess
 
 #states: lamp/time, tilt, lift, hour, minute, delay
 
@@ -22,6 +23,7 @@ state = 0
 t_begin = (7,0) # initialize to a 7:00 alarm
 delay = 30 # delay in minutes
 use_lamp = False
+ip_mode = False
 
 radio = NRF24(GPIO, spidev.SpiDev())
 
@@ -169,7 +171,10 @@ def dn(_):
         elif state == 2:
             lift_stop()
     
-def center():
+def center(_):
+    global ip_mode
+    if state == 0:
+        ip_mode = not ip_mode
     if state == 1:
         tilt_auto()
         
@@ -186,11 +191,14 @@ def main_loop():
     light_flag = False
     count = 0
     while True:
-        if count == 0:
+        if count % 12 == 0:
             t = list(time.localtime())
             cur_time = (t[3],t[4])
         if state == 0:
-            display.print("{:02d}.{:02d}".format(t[3],t[4]))
+            if ip_mode:
+                show_ip()
+            else:
+                display.print("{:02d}.{:02d}".format(t[3],t[4]))
         elif state == 1:
             display.print("TILT")
         elif state == 2:
@@ -213,8 +221,18 @@ def main_loop():
             light_flag = False
         time.sleep(0.1)
         count += 1
-        if count == 12:
+        if count == 24:
             count = 0
+
+def show_ip():
+    s = str(subprocess.check_output(['hostname','-I']))
+    l = s.split()[0][2:].split('.')
+    i = 0
+    while ip_mode:
+        display.print("{:>4}".format(l[i]))
+        i += 1
+        if i > 3: i = 0
+        time.sleep(2)
 
 if __name__ == "__main__":
     gpio_init()
