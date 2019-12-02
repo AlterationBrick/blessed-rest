@@ -19,8 +19,8 @@ For use with the Adafruit Motor Shield v2
 // You can also make another motor on port M2
 //Adafruit_DCMotor *myOtherMotor = AFMS.getMotor(2);
 
-int liftMotor[3] = {9,12,11};
-int tiltMotor[3] = {8,13,10};
+int tiltMotor[3] = {4, 8, 6};
+int liftMotor[3] = {3, 7, 5};
 
 
 void forward(int motor[3], int spd) {

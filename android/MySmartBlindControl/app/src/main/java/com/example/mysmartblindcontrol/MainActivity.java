@@ -11,7 +11,11 @@ import android.text.TextWatcher;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.SeekBar;
+import android.widget.Switch;
+import android.widget.TextView;
 import android.widget.TimePicker;
 
 import java.io.BufferedReader;
@@ -19,13 +23,14 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.sql.Time;
 import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
 
     String ipaddr = "0.0.0.0:0";
     EditText startTime;
+    SeekBar delaySlider;
+    TextView delay;
 
     @SuppressLint("ClickableViewAccessibility")
     @Override
@@ -36,8 +41,13 @@ public class MainActivity extends AppCompatActivity {
         Button tiltUp = findViewById(R.id.tiltUp);
         Button tiltDown = findViewById(R.id.tiltDown);
         Button tiltAuto = findViewById(R.id.tiltAuto);
-        Button testLamp = findViewById(R.id.testLamp);
+        Button liftUp = findViewById(R.id.liftUp);
+        Button liftDown = findViewById(R.id.liftDown);
         EditText ipField = findViewById(R.id.editText);
+        Switch almSwitch = findViewById(R.id.almSwitch);
+        Switch lampSwitch = findViewById(R.id.lampSwitch);
+        delaySlider = findViewById(R.id.delaySlider);
+        delay = findViewById(R.id.delay);
         startTime = findViewById(R.id.startTime);
         ipField.addTextChangedListener(watch);
 
@@ -76,11 +86,20 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        testLamp.setOnTouchListener(new View.OnTouchListener() {
+        liftUp.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN)
-                    new Background_get().execute("lamp/on");
+                    new Background_get().execute("lift/up");
+                return true;
+            }
+        });
+
+        liftDown.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                if (event.getAction() == MotionEvent.ACTION_DOWN)
+                    new Background_get().execute("lift/down");
                 return true;
             }
         });
@@ -104,6 +123,45 @@ public class MainActivity extends AppCompatActivity {
                     mTimePicker.show();
                 }
                 return true;
+            }
+        });
+
+        almSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    new Background_get().execute("alm/on");
+                } else {
+                    new Background_get().execute("alm/off");
+                }
+            }
+        });
+
+        lampSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    new Background_get().execute("artificial");
+                } else {
+                    new Background_get().execute("natural");
+                }
+            }
+        });
+
+        delaySlider.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+            @Override
+            public void onProgressChanged(SeekBar seekbar, int progress, boolean fromUser) {
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekbar) {
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekbar) {
+                int delayTime = seekbar.getProgress() * 5;
+                new Background_get().execute(String.format("delay/%d", delayTime));
+                delay.setText(String.valueOf(delayTime));
             }
         });
     }

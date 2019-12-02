@@ -9,11 +9,11 @@
 
 RF24 radio(9,10);
 
-char receivedMessage[2];
-char tiltStatus = 0; // 0=stop, 1=fwd, 2=rev
-char tiltStatusOld = 0;
-char liftStatus = 0;
-char liftStatusOld = 0;
+
+char tiltStatus = 's'; // s=stop, f=fwd, r=reverse
+char tiltStatusOld = 's';
+char liftStatus = 's';
+char liftStatusOld = 's';
 int liftMotor[3] = {4,8,6}; // {IN1, IN2, ENA}
 int tiltMotor[3] = {3,7,5};
 byte tiltSpeed = 0;
@@ -45,14 +45,20 @@ void setup(void) {
   radio.enableDynamicPayloads();
   radio.powerUp();
   Serial.begin(9600);
+  for (int i = 0; i < 3; i ++) {
+    pinMode(liftMotor[i], OUTPUT);
+    pinMode(tiltMotor[i], OUTPUT);  
+  }
+  coast(liftMotor);
+  coast(tiltMotor);
   
-  tiltStatus = 0;
-  liftStatus = 0;
+  tiltStatus = 's';
+  liftStatus = 's';
 }
 
 void loop(void) {
   radio.startListening();
-  receivedMessage = {0};
+  char receivedMessage[2] = {0};
   if (radio.available()) {
     radio.read(receivedMessage, sizeof(receivedMessage));
     radio.stopListening();
@@ -60,39 +66,40 @@ void loop(void) {
     liftStatusOld = liftStatus;
     tiltStatus = receivedMessage[0];
     liftStatus = receivedMessage[1];
+    Serial.println(tiltStatus);
   }
-  if (tiltStatus == 0) {
+  if (tiltStatus == 's') {
     tiltSpeed = 0;
     coast(tiltMotor);  
-  } else if (tiltStatus == 1) {
-    if (tiltStatusOld == 2) {
+  } else if (tiltStatus == 'f') {
+    if (tiltStatusOld == 'r') {
       // prevent bad things from quickly switching
       tiltSpeed = 0;  
     } else if (tiltSpeed < 100) {
       tiltSpeed += 5;
     }  
     forward(tiltMotor, tiltSpeed);
-  } else if (tiltStatus == 2) {
-    if (tiltStatusOld == 1) {
+  } else if (tiltStatus == 'r') {
+    if (tiltStatusOld == 'f') {
       tiltSpeed = 0;  
     } else if (tiltSpeed < 100) {
       tiltSpeed += 5;  
     }  
     reverse(tiltMotor, tiltSpeed);
   }
-  if (liftStatus == 0) {
+  if (liftStatus == 's') {
     liftSpeed = 0;
     coast(liftMotor);  
-  } else if (liftStatus == 1) {
-    if (liftStatusOld == 2) {
+  } else if (liftStatus == 'f') {
+    if (liftStatusOld == 'r') {
       // prevent bad things resulting from quickly switching
       liftSpeed = 0;  
     } else if (liftSpeed < 100) {
       liftSpeed += 5;
     }  
     forward(liftMotor, liftSpeed);
-  } else if (liftStatus == 2) {
-    if (liftStatusOld == 1) {
+  } else if (liftStatus == 'r') {
+    if (liftStatusOld == 'f') {
       liftSpeed = 0;  
     } else if (liftSpeed < 100) {
       liftSpeed += 5;  

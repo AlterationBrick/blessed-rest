@@ -7,42 +7,85 @@
     tools:context=".MainActivity">
 
     <Button
-        android:id="@+id/tiltUp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="64dp"
-        android:layout_marginLeft="64dp"
-        android:layout_marginTop="224dp"
-        android:text="Up"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="39dp"
-        android:layout_height="25dp"
-        android:layout_marginBottom="24dp"
-        android:text="Tilt"
-        app:layout_constraintBottom_toTopOf="@+id/tiltUp"
-        app:layout_constraintStart_toStartOf="@+id/tiltUp" />
-
-    <Button
         android:id="@+id/tiltAuto"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginStart="88dp"
+        android:layout_marginLeft="88dp"
+        android:layout_marginTop="24dp"
         android:text="Auto"
         app:layout_constraintStart_toStartOf="@+id/tiltUp"
         app:layout_constraintTop_toBottomOf="@+id/tiltUp" />
 
     <Button
+        android:id="@+id/tiltUp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="36dp"
+        android:layout_marginLeft="36dp"
+        android:layout_marginTop="244dp"
+        android:text="Up"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textView2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:text="Lift"
+        app:layout_constraintStart_toStartOf="@+id/liftUp"
+        app:layout_constraintTop_toTopOf="@+id/textView" />
+
+    <Button
         android:id="@+id/tiltDown"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="20dp"
         android:text="Down"
-        app:layout_constraintStart_toStartOf="@+id/tiltAuto"
+        app:layout_constraintStart_toStartOf="@+id/tiltUp"
         app:layout_constraintTop_toBottomOf="@+id/tiltAuto" />
+
+    <Button
+        android:id="@+id/liftDown"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginLeft="16dp"
+        android:text="Down"
+        app:layout_constraintStart_toStartOf="@+id/liftUp"
+        app:layout_constraintTop_toTopOf="@+id/tiltDown" />
+
+    <Switch
+        android:id="@+id/lampSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="92dp"
+        android:text="Use lamp instead of blinds"
+        android:textOff="Artificial"
+        android:textOn="Natural"
+        app:layout_constraintStart_toStartOf="@+id/tiltDown"
+        app:layout_constraintTop_toBottomOf="@+id/tiltDown" />
+
+    <Button
+        android:id="@+id/liftUp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="84dp"
+        android:layout_marginLeft="84dp"
+        android:text="Up"
+        app:layout_constraintStart_toEndOf="@+id/tiltUp"
+        app:layout_constraintTop_toTopOf="@+id/tiltUp" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="39dp"
+        android:layout_height="25dp"
+        android:layout_marginBottom="12dp"
+        android:text="Tilt"
+        app:layout_constraintBottom_toTopOf="@+id/tiltUp"
+        app:layout_constraintStart_toStartOf="@+id/tiltUp" />
 
     <EditText
         android:id="@+id/editText"
@@ -55,15 +98,6 @@
         app:layout_constraintStart_toStartOf="@+id/textView"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <Button
-        android:id="@+id/testLamp"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="212dp"
-        android:text="Test Lamp"
-        app:layout_constraintStart_toStartOf="@+id/tiltDown"
-        app:layout_constraintTop_toBottomOf="@+id/tiltDown" />
-
     <EditText
         android:id="@+id/startTime"
         android:layout_width="wrap_content"
@@ -74,5 +108,44 @@
         android:inputType="time"
         app:layout_constraintStart_toStartOf="@+id/editText"
         app:layout_constraintTop_toBottomOf="@+id/editText" />
+
+    <Switch
+        android:id="@+id/almSwitch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginLeft="32dp"
+        android:text="Alarm"
+        app:layout_constraintStart_toEndOf="@+id/startTime"
+        app:layout_constraintTop_toTopOf="@+id/startTime" />
+
+    <SeekBar
+        android:id="@+id/delaySlider"
+        style="@style/Widget.AppCompat.SeekBar.Discrete"
+        android:layout_width="259dp"
+        android:layout_height="23dp"
+        android:layout_marginTop="36dp"
+        android:max="12"
+        android:progress="6"
+        app:layout_constraintStart_toStartOf="@+id/startTime"
+        app:layout_constraintTop_toBottomOf="@+id/startTime" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Delay"
+        app:layout_constraintStart_toStartOf="@+id/delaySlider"
+        app:layout_constraintTop_toBottomOf="@+id/startTime" />
+
+    <TextView
+        android:id="@+id/delay"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="32dp"
+        android:layout_marginLeft="32dp"
+        app:layout_constraintStart_toEndOf="@+id/delaySlider"
+        app:layout_constraintTop_toTopOf="@+id/delaySlider" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
