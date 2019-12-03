@@ -91,6 +91,8 @@ public class MainActivity extends AppCompatActivity {
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN)
                     new Background_get().execute("lift/up");
+                else if (event.getAction() == MotionEvent.ACTION_UP)
+                    new Background_get().execute("lift/stop");
                 return true;
             }
         });
@@ -100,6 +102,8 @@ public class MainActivity extends AppCompatActivity {
             public boolean onTouch(View v, MotionEvent event) {
                 if (event.getAction() == MotionEvent.ACTION_DOWN)
                     new Background_get().execute("lift/down");
+                else if (event.getAction() == MotionEvent.ACTION_UP)
+                    new Background_get().execute("lift/stop");
                 return true;
             }
         });
